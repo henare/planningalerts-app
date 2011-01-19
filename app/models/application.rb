@@ -40,6 +40,8 @@ class Application < ActiveRecord::Base
       feed_data = open(url).read
     rescue Exception => e
       info_logger.error "Error #{e} while getting data from url #{url}. So, skipping"
+      auth.increment!(:scraper_failure_count)
+      auth.update_attributes(:last_scraper_output => e.to_s)
       return
     end
     feed = Nokogiri::XML(feed_data)
@@ -71,6 +73,9 @@ class Application < ActiveRecord::Base
       end
     end
     
+    auth.update_attributes(:scraper_failure_count => 0)
+    auth.update_attributes(:last_scraper_output => "#{count_new} applications found")
+
     if count_new > 0
       info_logger.info "#{count_new} new applications found for #{auth.full_name_and_state}"
     end
