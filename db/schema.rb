@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101222052304) do
+ActiveRecord::Schema.define(:version => 20110119065829) do
 
   create_table "alerts", :force => true do |t|
     t.string   "email",         :limit => 120, :null => false
@@ -24,21 +24,21 @@ ActiveRecord::Schema.define(:version => 20101222052304) do
   end
 
   create_table "applications", :force => true do |t|
-    t.string    "council_reference", :limit => 50,   :null => false
-    t.text      "address",                           :null => false
-    t.text      "description"
-    t.string    "info_url",          :limit => 1024
-    t.string    "comment_url",       :limit => 1024
-    t.integer   "authority_id",                      :null => false
-    t.float     "lat"
-    t.float     "lng"
-    t.timestamp "date_scraped",                      :null => false
-    t.date      "date_received"
-    t.string    "suburb",            :limit => 50
-    t.string    "state",             :limit => 10
-    t.string    "postcode",          :limit => 4
-    t.date      "on_notice_from"
-    t.date      "on_notice_to"
+    t.string   "council_reference", :limit => 50,   :null => false
+    t.text     "address",                           :null => false
+    t.text     "description"
+    t.string   "info_url",          :limit => 1024
+    t.string   "comment_url",       :limit => 1024
+    t.integer  "authority_id",                      :null => false
+    t.float    "lat"
+    t.float    "lng"
+    t.datetime "date_scraped",                      :null => false
+    t.date     "date_received"
+    t.string   "suburb",            :limit => 50
+    t.string   "state",             :limit => 10
+    t.string   "postcode",          :limit => 4
+    t.date     "on_notice_from"
+    t.date     "on_notice_to"
   end
 
   add_index "applications", ["authority_id"], :name => "authority_id"
@@ -51,12 +51,14 @@ ActiveRecord::Schema.define(:version => 20101222052304) do
   add_index "applications", ["suburb"], :name => "index_applications_on_suburb"
 
   create_table "authorities", :force => true do |t|
-    t.string  "full_name",  :limit => 200, :null => false
-    t.string  "short_name", :limit => 100, :null => false
+    t.string  "full_name",             :limit => 200, :null => false
+    t.string  "short_name",            :limit => 100, :null => false
     t.string  "feed_url"
     t.boolean "disabled"
-    t.string  "state",      :limit => 20
+    t.string  "state",                 :limit => 20
     t.string  "email"
+    t.integer "scraper_failure_count"
+    t.string  "last_scraper_output"
   end
 
   add_index "authorities", ["short_name"], :name => "short_name_unique", :unique => true
